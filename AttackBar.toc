@@ -1,7 +1,7 @@
 ## Interface: 11200
-## Title: Attack bar timer
-## Version: 5.01
-## Author: Udokus
+## Title: AttackBar-TWoW
+## Version: 5.02
+## Author: Udokus, Sivent
 ## X-Credits: Roablock for cleanup
 ## Notes: Displays a progress bar for your and enemy attack speed
 

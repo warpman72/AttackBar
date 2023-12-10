@@ -229,7 +229,8 @@ function Abar_spellhit(arg1)
     rs = rs - math_mod(rs, 0.01)
     Abar_Mhrs(trs, "Wand[" .. ons .. "s](" .. rhd .. "-" .. rld .. ")", .7, .1, 1)
   elseif (spell == "Raptor Strike" or spell == "Heroic Strike" or
-    spell == "Maul" or spell == "Cleave" or spell == "Slam") and AttackBarDB.h2h == true then
+          spell == "Maul" or spell == "Cleave" or spell == "Slam" or 
+		  spell == "Holy Strike") and AttackBarDB.h2h == true then
     local hd, ld, ohd, lhd = UnitDamage("player")
     hd, ld = hd - math_mod(hd, 1), ld - math_mod(ld, 1)
     if pofft == 0 then pofft = offt end
