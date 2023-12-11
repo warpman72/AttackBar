@@ -16,11 +16,14 @@ local eoffh = 0
 local eonh = 0
 local testvar = 0
 local math_mod = math.fmod or math.mod
+
 if not(AttackBarDB) then AttackBarDB = { } end
+
 function Abar_loaded()
   SlashCmdList["ATKBAR"] = Abar_chat;
   SLASH_ATKBAR1 = "/abar";
   SLASH_ATKBAR2 = "/atkbar";
+
   if AttackBarDB.range == nil then
     AttackBarDB.range = true
   end
@@ -76,6 +79,7 @@ function Abar_loaded()
     getglobal(ebar_oh:GetName() .. Border):Show()
   end
 end
+
 function Abar_chat(msg)
   msg = strlower(msg)
   if msg == "fix" then
@@ -133,23 +137,23 @@ function Abar_chat(msg)
       getglobal(ebar_oh:GetName() .. Border):Show()
     end
     DEFAULT_CHAT_FRAME:AddMessage("Attack bar textures are " .. AttackBarDB.text)
-
-
   elseif msg == "mob" then
     AttackBarDB.mob = not(AttackBarDB.mob)
     DEFAULT_CHAT_FRAME:AddMessage('mobs are' .. Abar_Boo(AttackBarDB.mob));
+    
   else
-    DEFAULT_CHAT_FRAME:AddMessage('use any of these to control Abar:');
-    DEFAULT_CHAT_FRAME:AddMessage('Lock- to lock and hide the anchor');
-    DEFAULT_CHAT_FRAME:AddMessage('unlock- to unlock and show the anchor');
-    DEFAULT_CHAT_FRAME:AddMessage('fix- to reset the values should they go awry, wait 5 sec after attacking to use this command');
-    DEFAULT_CHAT_FRAME:AddMessage('h2h- to turn on and off the melee bar(s)');
-    DEFAULT_CHAT_FRAME:AddMessage('range- to turn on and off the ranged bar');
-    DEFAULT_CHAT_FRAME:AddMessage('pvp- to turn on and off the enemy player bar(s)');
-    DEFAULT_CHAT_FRAME:AddMessage('mob- to turn on and off the enemy mob bar(s)');
-    DEFAULT_CHAT_FRAME:AddMessage('text- toggle from standard to line to no texture');
+    DEFAULT_CHAT_FRAME:AddMessage('Abar options:');
+    DEFAULT_CHAT_FRAME:AddMessage('lock - to lock and hide the anchor');
+    DEFAULT_CHAT_FRAME:AddMessage('unlock - to unlock and show the anchor');
+    DEFAULT_CHAT_FRAME:AddMessage('fix - to reset the values should they go awry, wait 5 sec after attacking to use this command');
+    DEFAULT_CHAT_FRAME:AddMessage('h2h - to turn on and off the melee bar(s)');
+    DEFAULT_CHAT_FRAME:AddMessage('range - to turn on and off the ranged bar');
+    DEFAULT_CHAT_FRAME:AddMessage('pvp - to turn on and off the enemy player bar(s)');
+    DEFAULT_CHAT_FRAME:AddMessage('mob - to turn on and off the enemy mob bar(s)');
+    DEFAULT_CHAT_FRAME:AddMessage('text - toggle from standard to line to no texture');
   end
 end
+
 function Abar_selfhit(arg1)
   local go = true;
   local a, b, spell = string.find(arg1, "Your (.+) hits")
@@ -193,6 +197,7 @@ function Abar_selfhit(arg1)
     end
   end
 end
+
 function Abar_reset()
   pont = 0.000
   pofft = 0.000
@@ -201,6 +206,7 @@ function Abar_reset()
   local onid = 0
   local offid = 0
 end
+
 function Abar_event(event)
   if (event == "CHAT_MSG_COMBAT_SELF_MISSES" or event == "CHAT_MSG_COMBAT_SELF_HITS") and AttackBarDB.h2h == true then Abar_selfhit(arg1) end
   if event == "PLAYER_LEAVE_COMBAT" then Abar_reset() end
@@ -209,6 +215,7 @@ function Abar_event(event)
   if event == "VARIABLES_LOADED" then Abar_loaded() end
   if event == "UNIT_SPELLCAST_SENT" then abar_spelldir(arg2) end
 end
+
 function Abar_spellhit(arg1)
   local a, b, spell = string.find(arg1, "Your (.+) hits")
   if not spell then a, b, spell = string.find(arg1, "Your (.+) crits") end
@@ -220,6 +227,7 @@ function Abar_spellhit(arg1)
   local rs, rhd, rld = UnitRangedDamage("player");
   local rhd, rld = rhd - math_mod(rhd, 1), rld - math_mod(rld, 1)
   local trs
+
   if spell == "Auto Shot" and AttackBarDB.range == true then
     trs = rs
     rs = rs - math_mod(rs, 0.01)
@@ -230,16 +238,19 @@ function Abar_spellhit(arg1)
     Abar_Mhrs(trs, "Wand[" .. ons .. "s](" .. rhd .. "-" .. rld .. ")", .7, .1, 1)
   elseif (spell == "Raptor Strike" or spell == "Heroic Strike" or
           spell == "Maul" or spell == "Cleave" or spell == "Slam" or 
-		  spell == "Holy Strike") and AttackBarDB.h2h == true then
+		      spell == "Holy Strike") and AttackBarDB.h2h == true then
+
     local hd, ld, ohd, lhd = UnitDamage("player")
     hd, ld = hd - math_mod(hd, 1), ld - math_mod(ld, 1)
     if pofft == 0 then pofft = offt end
     pont = ont
+    ons, offs = UnitAttackSpeed("player");
     local tons = ons
     ons = ons - math_mod(ons, 0.01)
     Abar_Mhrs(tons, "Main[" .. ons .. "s](" .. hd .. "-" .. ld .. ")", 0, 0, 1)
   end
 end
+
 function abar_spelldir(spellname)
   if AttackBarDB.range then
     local a, b, sparse = string.find(spellname, "(.+)%(")
@@ -296,6 +307,7 @@ function Abar_Update()
     tSpark:SetPoint("CENTER", this, "LEFT", 195, 2);
   end
 end
+
 function Abar_Mhrs(bartime, text, r, g, b)
   Abar_Mhr:Hide()
   Abar_Mhr.txt = text
@@ -307,6 +319,7 @@ function Abar_Mhrs(bartime, text, r, g, b)
   Abar_Mhr:SetValue(Abar_Mhr.st)
   Abar_Mhr:Show()
 end
+
 function Abar_Ohs(bartime, text, r, g, b)
   Abar_Oh:Hide()
   Abar_Oh.txt = text
@@ -318,9 +331,11 @@ function Abar_Ohs(bartime, text, r, g, b)
   Abar_Oh:SetValue(Abar_Oh.st)
   Abar_Oh:Show()
 end
+
 function Abar_Boo(inpt)
   if inpt == true then return " ON" else return " OFF" end
 end
+
 -----------------------------------------------------------------------------------------------------------------------
 -- ENEMY BAR CODE --
 -----------------------------------------------------------------------------------------------------------------------
@@ -352,12 +367,13 @@ function ebar_start(arg1)
   if not hitter then a, b, hitter = string.find(arg1, "(.+) attacks. You ") end
   if hitter == UnitName("target") then ebar_set(hitter) end
 end
+
 function ebar_set(targ)
   eons, eoffs = UnitAttackSpeed("target")
   eons = eons - math_mod(eons, 0.01)
   ebar_mhs(eons, "Target" .. "[" .. eons .. "s]", 1, .1, .1)
 end
--- end
+
 function ebar_mhs(bartime, text, r, g, b)
   ebar_mh:Hide()
   ebar_mh.txt = text
@@ -369,6 +385,7 @@ function ebar_mhs(bartime, text, r, g, b)
   ebar_mh:SetValue(ebar_mh.st)
   ebar_mh:Show()
 end
+
 function ebar_ohs(bartime, text, r, g, b)
   ebar_oh:Hide()
   ebar_oh.txt = text
