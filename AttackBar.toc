@@ -1,6 +1,6 @@
 ## Interface: 11200
-## Title: AttackBar-TWoW
-## Version: 5.02
+## Title: AttackBar TW Edition
+## Version: 5.03
 ## Author: Udokus, Sivent
 ## X-Credits: Roablock for cleanup
 ## Notes: Displays a progress bar for your and enemy attack speed
