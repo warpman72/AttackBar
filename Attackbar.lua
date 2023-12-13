@@ -6,15 +6,8 @@ local ons = 0.000
 local offs = 0.000
 local offh = 0
 local onh = 0
-local epont = 0.000
-local epofft = 0.000
-local eont = 0.000
-local eofft = 0.000
 local eons = 0.000
 local eoffs = 0.000
-local eoffh = 0
-local eonh = 0
-local math_mod = math.fmod or math.mod
 
 if not(AttackBarDB) then AttackBarDB = { } end
 
@@ -200,19 +193,19 @@ function Abar_meleeHit()
         tons = ons
         offh = 0
         onh = onh + 1
-        ons = ons - math_mod(ons, 0.01)
+        ons = ons - math.mod(ons, 0.01)
         Abar_Mhrs(tons, "", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
       else
         pofft = offt
         offh = offh + 1
         onh = 0
-        offs = offs - math_mod(offs, 0.01)
+        offs = offs - math.mod(offs, 0.01)
         Abar_Ohs(offs, "", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
       end
     else
       ont = GetTime()
       tons = ons
-      ons = ons - math_mod(ons, 0.01)
+      ons = ons - math.mod(ons, 0.01)
       Abar_Mhrs(tons, "", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
     end
 end
@@ -244,11 +237,11 @@ function Abar_spellhit(arg1)
 
   if spell == "Auto Shot" and AttackBarDB.range == true then
     trs = rs
-    rs = rs - math_mod(rs, 0.01)
+    rs = rs - math.mod(rs, 0.01)
     Abar_Mhrs(trs, "Auto Shot [" .. rs .. "s]", 0, 1, 0)
   elseif spell == "Shoot" and AttackBarDB.range == true then
     trs = rs
-    rs = rs - math_mod(rs, 0.01)
+    rs = rs - math.mod(rs, 0.01)
     Abar_Mhrs(trs, "Wand [" .. ons .. "s]", .7, .1, 1)
   elseif (spell == "Raptor Strike" or spell == "Heroic Strike" or
           spell == "Maul" or spell == "Cleave" or spell == "Slam" or 
@@ -266,40 +259,41 @@ function abar_spelldir(spellname)
 
     if spellname == "Throw" then
       trs = rs
-      rs = rs - math_mod(rs, 0.01)
+      rs = rs - math.mod(rs, 0.01)
       Abar_Mhrs(trs - 1, "Thrown [" ..(rs) .. "s]", 1, .5, 0)
     elseif spellname == "Shoot" then
       rs = UnitRangedDamage("player")
       trs = rs
-      rs = rs - math_mod(rs, 0.01)
+      rs = rs - math.mod(rs, 0.01)
       Abar_Mhrs(trs - 1, "Range [" ..(rs) .. "s]", .5, 0, 1)
     elseif spellname == "Shoot Bow" then
       trs = rs
-      rs = rs - math_mod(rs, 0.01)
+      rs = rs - math.mod(rs, 0.01)
       Abar_Mhrs(trs - 1, "Bow [" ..(rs) .. "s]", 1, .5, 0)
     elseif spellname == "Shoot Gun" then
       trs = rs
-      rs = rs - math_mod(rs, 0.01)
+      rs = rs - math.mod(rs, 0.01)
       Abar_Mhrs(trs - 1, "Gun [" ..(rs) .. "s]", 1, .5, 0)
     elseif spellname == "Shoot Crossbow" then
       trs = rs
-      rs = rs - math_mod(rs, 0.01)
+      rs = rs - math.mod(rs, 0.01)
       Abar_Mhrs(trs - 1, "X-Bow [" ..(rs) .. "s]", 1, .5, 0)
     elseif spellname == "Aimed Shot" then
       trs = rs
-      rs = rs - math_mod(rs, 0.01)
+      rs = rs - math.mod(rs, 0.01)
       Abar_Mhrs(trs - 1, "Aiming [" ..(3) .. "s]", 1, .1, .1)
     end
   end
 end
-	
+
 function Abar_Update()
   local ttime = GetTime()
-  local left = 0.00
+  local left = 0.0
   local tSpark = getglobal(this:GetName() .. "Spark")
   local tText = getglobal(this:GetName() .. "Tmr")
   if AttackBarDB.timer == true then
-    left = (this.et - GetTime()) - (math_mod((this.et - GetTime()), .01))
+    left = (this.et - GetTime()) - (math.mod((this.et - GetTime()), .01))
+    left = math.floor(left*10) / 10
     tText:SetText(left)
     tText:Show()
   else
@@ -380,7 +374,7 @@ end
 
 function ebar_set(targ)
   eons, eoffs = UnitAttackSpeed("target")
-  eons = eons - math_mod(eons, 0.01)
+  eons = eons - math.mod(eons, 0.01)
   ebar_mhs(eons, "Target " .. " [" .. eons .. "s]", 1, .1, .1)
 end
 

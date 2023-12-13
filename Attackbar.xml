@@ -50,7 +50,6 @@
             </Anchor>
           </Anchors>
         </FontString>
-
       </Layer>
     </Layers>
     <Scripts>
@@ -59,7 +58,6 @@
         this:StartMoving();
         end
       </OnMouseDown>
-
       <OnMouseUp>
         if(arg1 == "LeftButton") then
         this:StopMovingOrSizing();
@@ -70,10 +68,7 @@
         Abar_Frame:Hide()
       </OnLoad>
     </Scripts>
-
-
   </Frame>
-
   <StatusBar name="AbarBar" hidden="true" drawLayer="BORDER" parent="UIParent" virtual="true" toplevel="true">
     <Size>
       <AbsDimension x="195" y="13"/>
