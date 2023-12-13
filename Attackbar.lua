@@ -23,38 +23,23 @@ function Abar_loaded()
   SLASH_ATKBAR1 = "/abar";
   SLASH_ATKBAR2 = "/atkbar";
 
-  if AttackBarDB.range == nil then
-    AttackBarDB.range = true
-  end
-  if AttackBarDB.melee == nil then
-    AttackBarDB.melee = true
-  end
-  if AttackBarDB.timer == nil then
-    AttackBarDB.timer = true
-  end
-  if AttackBarDB.mob == nil then
-    AttackBarDB.mob = true
-  end
-  if AttackBarDB.pvp == nil then
-    AttackBarDB.pvp = true
-  end
-  if AttackBarDB.text == nil then
-    AttackBarDB.pvp = "standard"
-  end
-  if AttackBarDB.r == nil then
-    AttackBarDB.r = 0
-  end
-  if AttackBarDB.g == nil then
-    AttackBarDB.g = 0
-  end
-  if AttackBarDB.b == nil then
-    AttackBarDB.b = 1
-  end
+  if AttackBarDB.range == nil then AttackBarDB.range = true end
+  if AttackBarDB.melee == nil then AttackBarDB.melee = true end
+  if AttackBarDB.timer == nil then AttackBarDB.timer = true end
+  if AttackBarDB.mob == nil then AttackBarDB.mob = true end
+  if AttackBarDB.pvp == nil then AttackBarDB.pvp = true end
+  if AttackBarDB.text == nil then AttackBarDB.pvp = "standard" end
+  if AttackBarDB.r == nil then AttackBarDB.r = 0 end
+  if AttackBarDB.g == nil then AttackBarDB.g = 0 end
+  if AttackBarDB.b == nil then AttackBarDB.b = 1 end
 
   Abar_Mhr:SetPoint("LEFT", Abar_Frame, "TOPLEFT", 6, -13)
   Abar_Oh:SetPoint("LEFT", Abar_Frame, "TOPLEFT", 6, -35)
-  Abar_MhrText:SetJustifyH("Left")
-  Abar_OhText:SetJustifyH("Left")
+  Abar_MhrText:SetJustifyH("RIGHT")
+  Abar_MhrTmr:SetJustifyH("LEFT")
+  Abar_OhText:SetJustifyH("LEFT")
+  Abar_OhTmr:SetJustifyH("RIGHT")
+  
   ebar_VL()
   local Border = "Border"
   local Bordern = "Bordern"
@@ -208,26 +193,27 @@ function Abar_meleeHit()
     local tons
     if offs then
       ont, offt = GetTime(), GetTime()
-      if ((math.abs((ont - pont) - ons) <= math.abs((offt - pofft) - offs)) and not(onh <= offs / ons)) or offh >= ons / offs then
+      if ((math.abs((ont - pont) - ons) <= math.abs((offt - pofft) - offs)) and not(onh <= offs / ons)) 
+          or offh >= ons / offs then
         if pofft == 0 then pofft = offt end
         pont = ont
         tons = ons
         offh = 0
         onh = onh + 1
         ons = ons - math_mod(ons, 0.01)
-        Abar_Mhrs(tons, "Main [" .. ons .. "s]", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
+        Abar_Mhrs(tons, "", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
       else
         pofft = offt
         offh = offh + 1
         onh = 0
         offs = offs - math_mod(offs, 0.01)
-        Abar_Ohs(offs, "Off [" .. offs .. "s]", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
+        Abar_Ohs(offs, "", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
       end
     else
       ont = GetTime()
       tons = ons
       ons = ons - math_mod(ons, 0.01)
-      Abar_Mhrs(tons, "Main [" .. ons .. "s]", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
+      Abar_Mhrs(tons, "", AttackBarDB.r, AttackBarDB.g, AttackBarDB.b)
     end
 end
 
@@ -254,17 +240,16 @@ function Abar_spellhit(arg1)
   if not spell then spell = arg1 end
 
   local rs, rhd, rld = UnitRangedDamage("player");
-  local rhd, rld = rhd - math_mod(rhd, 1), rld - math_mod(rld, 1)
   local trs
 
   if spell == "Auto Shot" and AttackBarDB.range == true then
     trs = rs
     rs = rs - math_mod(rs, 0.01)
-    Abar_Mhrs(trs, "Auto Shot [" .. rs .. "s](" .. rhd .. "-" .. rld .. ")", 0, 1, 0)
+    Abar_Mhrs(trs, "Auto Shot [" .. rs .. "s]", 0, 1, 0)
   elseif spell == "Shoot" and AttackBarDB.range == true then
     trs = rs
     rs = rs - math_mod(rs, 0.01)
-    Abar_Mhrs(trs, "Wand [" .. ons .. "s](" .. rhd .. "-" .. rld .. ")", .7, .1, 1)
+    Abar_Mhrs(trs, "Wand [" .. ons .. "s]", .7, .1, 1)
   elseif (spell == "Raptor Strike" or spell == "Heroic Strike" or
           spell == "Maul" or spell == "Cleave" or spell == "Slam" or 
 		  spell == "Holy Strike") and AttackBarDB.melee == true then
@@ -277,29 +262,29 @@ function abar_spelldir(spellname)
     local a, b, sparse = string.find(spellname, "(.+)%(")
     if sparse then spellname = sparse end
     local rs, rhd, rld = UnitRangedDamage("player");
-    rhd, rld = rhd - math_mod(rhd, 1), rld - math_mod(rld, 1)
     local trs
+
     if spellname == "Throw" then
       trs = rs
       rs = rs - math_mod(rs, 0.01)
-      Abar_Mhrs(trs - 1, "Thrown [" ..(rs) .. "s](" .. rhd .. "-" .. rld .. ")", 1, .5, 0)
+      Abar_Mhrs(trs - 1, "Thrown [" ..(rs) .. "s]", 1, .5, 0)
     elseif spellname == "Shoot" then
       rs = UnitRangedDamage("player")
       trs = rs
       rs = rs - math_mod(rs, 0.01)
-      Abar_Mhrs(trs - 1, "Range [" ..(rs) .. "s](" .. rhd .. "-" .. rld .. ")", .5, 0, 1)
+      Abar_Mhrs(trs - 1, "Range [" ..(rs) .. "s]", .5, 0, 1)
     elseif spellname == "Shoot Bow" then
       trs = rs
       rs = rs - math_mod(rs, 0.01)
-      Abar_Mhrs(trs - 1, "Bow [" ..(rs) .. "s](" .. rhd .. "-" .. rld .. ")", 1, .5, 0)
+      Abar_Mhrs(trs - 1, "Bow [" ..(rs) .. "s]", 1, .5, 0)
     elseif spellname == "Shoot Gun" then
       trs = rs
       rs = rs - math_mod(rs, 0.01)
-      Abar_Mhrs(trs - 1, "Gun [" ..(rs) .. "s](" .. rhd .. "-" .. rld .. ")", 1, .5, 0)
+      Abar_Mhrs(trs - 1, "Gun [" ..(rs) .. "s]", 1, .5, 0)
     elseif spellname == "Shoot Crossbow" then
       trs = rs
       rs = rs - math_mod(rs, 0.01)
-      Abar_Mhrs(trs - 1, "X-Bow [" ..(rs) .. "s](" .. rhd .. "-" .. rld .. ")", 1, .5, 0)
+      Abar_Mhrs(trs - 1, "X-Bow [" ..(rs) .. "s]", 1, .5, 0)
     elseif spellname == "Aimed Shot" then
       trs = rs
       rs = rs - math_mod(rs, 0.01)
@@ -314,15 +299,16 @@ function Abar_Update()
   local tSpark = getglobal(this:GetName() .. "Spark")
   local tText = getglobal(this:GetName() .. "Tmr")
   if AttackBarDB.timer == true then
-    left =(this.et - GetTime()) -(math_mod((this.et - GetTime()), .01))
-    -- tText:SetText(this.txt.. "{"..left.."}")
-    tText:SetText("{" .. left .. "}")
+    left = (this.et - GetTime()) - (math_mod((this.et - GetTime()), .01))
+    tText:SetText(left)
     tText:Show()
   else
     tText:Hide()
   end
+
   this:SetValue(ttime)
   tSpark:SetPoint("CENTER", this, "LEFT",(ttime - this.st) /(this.et - this.st) * 195, 2);
+
   if ttime >= this.et then
     this:Hide()
     tSpark:SetPoint("CENTER", this, "LEFT", 195, 2);
@@ -365,7 +351,9 @@ function ebar_VL()
   ebar_mh:SetPoint("LEFT", ebar_Frame, "TOPLEFT", 6, -13)
   ebar_oh:SetPoint("LEFT", ebar_Frame, "TOPLEFT", 6, -35)
   ebar_mhText:SetJustifyH("Left")
+  ebar_mhTmr:SetJustifyH("Left")
   ebar_ohText:SetJustifyH("Left")
+  ebar_ohTmr:SetJustifyH("Left")
 end
 
 function ebar_event(event)
@@ -393,7 +381,7 @@ end
 function ebar_set(targ)
   eons, eoffs = UnitAttackSpeed("target")
   eons = eons - math_mod(eons, 0.01)
-  ebar_mhs(eons, "Target" .. " [" .. eons .. "s]", 1, .1, .1)
+  ebar_mhs(eons, "Target " .. " [" .. eons .. "s]", 1, .1, .1)
 end
 
 function ebar_mhs(bartime, text, r, g, b)
