@@ -25,9 +25,9 @@
       <AbsDimension x="206" y="52"/>
     </Size>
     <Anchors>
-      <Anchor point="TOP">
+      <Anchor point="BOTTOM">
         <Offset>
-          <AbsDimension x="0" y="-125"/>
+          <AbsDimension x="-175" y="54"/>
         </Offset>
       </Anchor>
     </Anchors>
@@ -163,9 +163,9 @@
       <AbsDimension x="206" y="52"/>
     </Size>
     <Anchors>
-      <Anchor point="TOP">
+      <Anchor point="BOTTOM">
         <Offset>
-          <AbsDimension x="0" y="-125"/>
+          <AbsDimension x="175" y="54"/>
         </Offset>
       </Anchor>
     </Anchors>
