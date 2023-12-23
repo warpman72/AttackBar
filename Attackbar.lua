@@ -30,8 +30,8 @@ function Abar_loaded()
   Abar_Oh:SetPoint("LEFT", Abar_Frame, "TOPLEFT", 6, -35)
   Abar_MhrText:SetJustifyH("RIGHT")
   Abar_MhrTmr:SetJustifyH("LEFT")
-  Abar_OhText:SetJustifyH("LEFT")
-  Abar_OhTmr:SetJustifyH("RIGHT")
+  Abar_OhText:SetJustifyH("RIGHT")
+  Abar_OhTmr:SetJustifyH("LEFT")
   
   ebar_VL()
   local Border = "Border"
